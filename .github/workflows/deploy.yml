@@ -1,4 +1,4 @@
-name: Deploy to Azure Container Apps
+name: Deploy to Azure
 
 on:
   push:
@@ -6,12 +6,16 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -24,24 +28,11 @@ jobs:
       - name: Build the project
         run: npm run build
 
-      - name: Log in to Azure
-        uses: azure/login@v1
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Build and push Docker image
-        env:
-          REGISTRY: ${{ secrets.AZURE_PREFIX }}acr.azurecr.io
-          IMAGE_NAME: gedp7containerapp
-        run: |
-          echo "${{ secrets.AZURE_CREDENTIALS }}" | docker login ${{ env.REGISTRY }} --username ${{ secrets.AZURE_USERNAME }} --password-stdin
-          docker build -t ${{ env.IMAGE_NAME }}:latest .
-          docker tag ${{ env.IMAGE_NAME }}:latest ${{ env.REGISTRY }}/{{ env.IMAGE_NAME }}:latest
-          docker push ${{ env.REGISTRY }}/{{ env.IMAGE_NAME }}:latest
-
-      - name: Deploy to Azure Container Apps
-        run: |
-          az containerapp update \
-            --name gedp7containerapp \
-            --resource-group pets-workshop3 \
-            --image ${{ env.REGISTRY }}/{{ env.IMAGE_NAME }}:latest
+          appSourcePath: ${{ github.workspace }}
+          acrName: gedp7acr
+          resourceGroup: pets-workshop3
+          containerAppName: gedp7containerapp
+          containerAppEnvironment: gedp7containerappenvironment
