@@ -1,4 +1,5 @@
 name: Deploy to Azure
+
 on:
   push:
     branches:
@@ -9,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # Actualiza a la versión compatible con Node.js 20
 
       - name: Log in to Azure
         uses: azure/login@v1
@@ -20,7 +21,7 @@ jobs:
         uses: azure/container-apps-deploy-action@v1
         with:
           appSourcePath: ${{ github.workspace }}
-          acrName: gedp7 acr
+          acrName: gedp7acr
           resourceGroup: ${{ vars.AZURE_RG }}
-          containerAppName: gedp7 containerapp
-          containerAppEnvironment: gedp7 containerappenvironment
+          containerAppName: gedp7containerapp
+          containerAppEnvironment: gedp7containerappenvironment
