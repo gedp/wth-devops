@@ -1,16 +1,25 @@
-import React from 'react';
+import React from "react";
 
 const Hours = () => {
-  const today = new Date();
-  const day = today.getDay();
-  const hours = (day >= 1 && day <= 5) ? '10 a.m. a 4 p.m.' : '9 a.m. a 8 p.m.';
+    const shelterHours = [
+        { day: "Monday", open: "10:00", close: "16:00" },
+        { day: "Tuesday", open: "10:00", close: "16:00" },
+        { day: "Wednesday", open: "10:00", close: "16:00" },
+        { day: "Thursday", open: "10:00", close: "16:00" },
+        { day: "Friday", open: "10:00", close: "16:00" },
+        { day: "Saturday", open: "9:00", close: "20:00" },
+        { day: "Sunday", open: "9:00", close: "20:00" },
+    ];
 
-  return (
-    <div>
-      <h2>Horario de apertura del refugio</h2>
-      <p>Hoy estamos abiertos de {hours}</p>
-    </div>
-  );
+    const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+    const todayHours = shelterHours.find((day) => day.day === today);
+
+    return (
+        <div id="hours">
+            <h2>Today's Hours</h2>
+            <p>{todayHours.day} {todayHours.open} - {todayHours.close}</p>
+        </div>
+    );
 };
 
 export default Hours;
