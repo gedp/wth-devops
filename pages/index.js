@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Hours from "./Hours";
+import Hours from "../components/Hours";
 
 const App = () => {
   return (

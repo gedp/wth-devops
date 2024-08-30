@@ -37,3 +37,6 @@ jobs:
           resourceGroup: pets-workshop3
           containerAppName: gedp7containerapp
           containerAppEnvironment: gedp7containerappenvironment
+          registryLoginServer: ${{ secrets.ACR_LOGIN_SERVER }}
+          registryUsername: ${{ secrets.ACR_USERNAME }}
+          registryPassword: ${{ secrets.ACR_PASSWORD }}
