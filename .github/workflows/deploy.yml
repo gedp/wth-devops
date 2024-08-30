@@ -6,22 +6,32 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4  # Actualiza a la versión compatible con Node.js 20
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'  # Asegúrate de usar la versión de Node.js que necesitas
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
 
       - name: Log in to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Build and deploy Container App
-        uses: azure/container-apps-deploy-action@v1
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
         with:
-          appSourcePath: ${{ github.workspace }}
-          acrName: gedp7 acr
-          resourceGroup: ${{ vars.AZURE_RG }}
-          containerAppName: gedp7 containerapp
-          containerAppEnvironment: gedp7 containerappenvironment
+          app-name: 'gedp7containerapp'  # Reemplaza con el nombre de tu aplicación en Azure
+          slot-name: 'production'
+          package: '.'
