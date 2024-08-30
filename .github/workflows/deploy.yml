@@ -23,6 +23,9 @@ jobs:
         with:
           node-version: '18.17.0'  # Asegúrate de usar la versión de Node.js que necesitas
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Build the project
         run: npm run build
 
