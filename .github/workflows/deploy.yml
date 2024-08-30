@@ -21,7 +21,7 @@ jobs:
         uses: azure/container-apps-deploy-action@v1
         with:
           appSourcePath: ${{ github.workspace }}
-          acrName: gedp7acr
+          acrName: gedp7 acr
           resourceGroup: ${{ vars.AZURE_RG }}
-          containerAppName: gedp7containerapp
-          containerAppEnvironment: gedp7containerappenvironment
+          containerAppName: gedp7 containerapp
+          containerAppEnvironment: gedp7 containerappenvironment
